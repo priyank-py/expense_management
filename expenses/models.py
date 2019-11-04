@@ -21,7 +21,7 @@ class Expense(models.Model):
         verbose_name_plural = _("Expenses")
 
     def __str__(self):
-        return self.name
+        return f'{self.budget} - {self.expense_type}'
 
     def get_absolute_url(self):
         return reverse("Expense_detail", kwargs={"pk": self.pk})
@@ -29,19 +29,18 @@ class Expense(models.Model):
 
 class ExpenseInstallment(models.Model):
 
-    expense = models.ForeignKey(Expense, verbose_name=_(""), on_delete=models.CASCADE)
+    expense = models.ForeignKey(Expense, verbose_name=_(""), related_name="installments", on_delete=models.CASCADE)
     amount_paid = models.IntegerField(_("Amount Paid"), blank=True, null=True)
     date = models.DateField(_("Date"), auto_now=False, auto_now_add=False, blank=True, null=True)
     next_pay_date = models.DateField(_("Next Pay Date"), auto_now=False, auto_now_add=False, blank=True, null=True)
-    
-    
+
 
     class Meta:
         verbose_name = _("ExpenseInstallment")
         verbose_name_plural = _("ExpenseInstallments")
 
     def __str__(self):
-        return self.name
+        return f'{self.expense}'
 
     def get_absolute_url(self):
         return reverse("ExpenseInstallment_detail", kwargs={"pk": self.pk})
