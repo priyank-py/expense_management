@@ -5,8 +5,10 @@ from vendors.models import Vendor
 
 class Budget(models.Model):
 
+    budget_type_choices = (('personal', 'Personal'), ('corporate', 'Corporate'))
+
     title = models.CharField(_("Title"), max_length=50)
-    purpose = models.CharField(_("Purpose"), max_length=50)
+    budget_type = models.CharField(_("Budget Type"), choices=budget_type_choices, max_length=20, blank=True, null=True)
     date = models.DateField(_("Date"), auto_now=False, auto_now_add=False)
     amount = models.IntegerField(_("Amount (in rupees)"))
     vendor = models.ForeignKey(Vendor , verbose_name=_("Vendor"), on_delete=models.DO_NOTHING)

@@ -4,7 +4,7 @@ from .models import Budget
 
 @admin.register(Budget)
 class BudgetAdmin(admin.ModelAdmin):
-    list_display = ['title', 'purpose', 'amount', 'vendor']
+    list_display = ['title', 'amount', 'vendor']
     
 
 
