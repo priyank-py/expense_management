@@ -4,6 +4,7 @@ from expenses.models import Expense
 import calendar 
 from datetime import datetime, date, timedelta
 from django.db.models import Sum
+import json
 
 
 def dashboard(request):
@@ -34,7 +35,17 @@ def dashboard(request):
         all_incomplete = {i:i.installments.aggregate(Sum('amount_paid')) for i in expenses_this_month.order_by('-budget__amount')[:5]}
     else:
         all_incomplete = {i:[i.installments.aggregate(Sum('amount_paid')), round(((i.budget.amount - i.installments.aggregate(Sum('amount_paid'))['amount_paid__sum'])/i.budget.amount)*100), i.installments.last().next_pay_date] for i in expenses_this_month.order_by('-budget__amount')}
-    print(all_incomplete) 
+    print(all_incomplete)
+
+    #For graph
+
+    expense_per_budget = [{i: [i.title, i.amount,Expense.objects.all().filter(budget=i)[0].installments.aggregate(Sum('amount_paid'))]} if Expense.objects.all().filter(budget=i).exists() else {i:[i.title, i.amount, 0]} for i in months_budget ]
+    print(expense_per_budget)
+
+    budget_labels = [i.title for i in months_budget]
+    budget_amount = [i.amount for i in months_budget]
+    budget_expense = [Expense.objects.all().filter(budget=i)[0].installments.aggregate(Sum('amount_paid'))['amount_paid__sum'] if Expense.objects.all().filter(budget=i).exists() else 0  for i in months_budget]
+
     context = {
         'current_month_word':current_month_word, 
         'current_year': current_year,
@@ -45,6 +56,9 @@ def dashboard(request):
         'expenses_so_far': expenses_so_far,
         'expenses_past_seven_days': expenses_past_seven_days,
         'all_incomplete': all_incomplete,
+        'budget_labels': budget_labels,
+        'budget_amount': budget_amount,
+        'budget_expense': budget_expense,
     }
 
     return render(request, 'main/index.html', context)

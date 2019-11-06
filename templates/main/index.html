@@ -120,8 +120,8 @@
         </div>
         <!-- /.row-->
         <div class="chart-wrapper d-flex align-items-center" style="height:300px;margin-top:40px;">
-          <canvas id="countries"></canvas>
-          <canvas style="float: right;" id="country" width="300" height="200"></canvas>
+          
+          <canvas height="300" id="country" ></canvas>
         </div>
       </div>
       <div class="card-footer">
@@ -153,71 +153,56 @@
     </div>
     <!-- /.card-->
     
-    <script>
-        var pieData = [
-            {
-                value: 20,
-                color:"#878BB6"
-            },
-            {
-                value : 40,
-                color : "#4ACAB4"
-            },
-            {
-                value : 10,
-                color : "#FF8153"
-            },
-            {
-                value : 30,
-                color : "#FFEA88"
-            }
-        ];
-        // Get the context of the canvas element we want to select
-        var countries= document.getElementById("countries").getContext("2d");
-        new Chart(countries).Pie(pieData);
-    </script>
+   
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
  <script>
-        var pieData = [
-            {
-                value: 20,
-                color:"#878BB6"
-            },
-            {
-                value : 40,
-                color : "#4ACAB4"
-            },
-            {
-                value : 10,
-                color : "#FF8153"
-            },
-            {
-                value : 30,
-                color : "#FFEA88"
-            }
-        ];
-        // Get the context of the canvas element we want to select
-        var countries= document.getElementById("country").getContext("2d");
-        new Chart(countries).Pie(pieData);
-    </script>
-  <script>
-var ctx = document.getElementById('main-Chart').getContext('2d');
-var chart = new Chart(ctx, {
-    // The type of chart we want to create
-    type: 'line',
-
-    // The data for our dataset
+   const graph = new Chart(document.getElementById("country"), {
+    type: 'bar',
     data: {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-        datasets: [{
-            label: 'My First dataset',
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: [0, 10, 5, 2, 20, 30, 45]
-        }]
+      labels: {{budget_labels|safe}},
+      datasets: [
+        {
+          label: "Budget",
+          backgroundColor: "#3e95cd",
+          data: {{budget_amount}}
+        }, {
+          label: "Expense",
+          backgroundColor: "#8e5ea2",
+          data: {{budget_expense}}
+        }
+      ]
     },
+    options: {
+      title: {
+        display: true,
+        text: 'Budget vs Expense (Rupees)'
+      }
+    }
+});
 
-    // Configuration options go here
-    options: {}
+
+ 
+ </script>
+        <script>
+      var ctx = document.getElementById('main-Chart').getContext('2d');
+      var chart = new Chart(ctx, {
+          // The type of chart we want to create
+          type: 'line',
+
+          // The data for our dataset
+          data: {
+              labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+              datasets: [{
+                  label: 'My First dataset',
+                  backgroundColor: 'rgb(255, 99, 132)',
+                  borderColor: 'rgb(255, 99, 132)',
+                  data: [0, 10, 5, 2, 20, 30, 45]
+              }]
+          },
+
+          // Configuration options go here
+          options: {}
 });
 </script>
 
