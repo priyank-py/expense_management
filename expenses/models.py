@@ -26,10 +26,12 @@ class Expense(models.Model):
     def get_absolute_url(self):
         return reverse("Expense_detail", kwargs={"pk": self.pk})
 
+    
+
 
 class ExpenseInstallment(models.Model):
 
-    expense = models.ForeignKey(Expense, verbose_name=_(""), related_name="installments", on_delete=models.CASCADE)
+    expense = models.ForeignKey(Expense, related_name="installments", on_delete=models.CASCADE)
     amount_paid = models.IntegerField(_("Amount Paid"), blank=True, null=True)
     date = models.DateField(_("Date"), auto_now=False, auto_now_add=False, blank=True, null=True)
     next_pay_date = models.DateField(_("Next Pay Date"), auto_now=False, auto_now_add=False, blank=True, null=True)
@@ -45,4 +47,9 @@ class ExpenseInstallment(models.Model):
     def get_absolute_url(self):
         return reverse("ExpenseInstallment_detail", kwargs={"pk": self.pk})
 
-
+    def save(self, *args, **kwargs):
+        self.this_expense = Expense.objects.all().filter(id=expense.id)
+        setattr(self.this_expense, f'amount{id}', self.amount_paid)
+        print(self.this_expense._meta)
+        
+        super(Expense, self).save(*args, **kwargs)
