@@ -68,7 +68,7 @@ def download_csv(request, start_end):
 
     # Create the HttpResponse object with the appropriate CSV header.
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="budget.csv"'
+    response['Content-Disposition'] = f'attachment; filename="budget {start_end}.csv"'
 
     writer = csv.writer(response)
     writer.writerow(['ID', 'Title', 'Amount', 'Date', 'Budget Type','Vendor'])

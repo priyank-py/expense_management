@@ -73,14 +73,14 @@ def download_expenses(request, start_end):
 
     # Create the HttpResponse object with the appropriate CSV header.
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="expenses.csv"'
+    response['Content-Disposition'] = f'attachment; filename="expenses {start_end}.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(['ID', 'Budget', 'Vendor', 'Budget Type','Vendor', 'Payment Status', 'Expense Type', 'Paid Amt (Installment 1)', 'Date', 'Paid Amt (Installment 2)', 'Date', 'Paid Amt (Installment 3)', 'Date','Paid Amt (Installment 4)', 'Date','Paid Amt (Installment 5)', 'Date'])
+    writer.writerow(['ID', 'Budget', 'Vendor', 'Budget Type','Vendor', 'Payment Status', 'Expense Type', 'Remarks','Paid Amt (Installment 1)', 'Date', 'Paid Amt (Installment 2)', 'Date', 'Paid Amt (Installment 3)', 'Date','Paid Amt (Installment 4)', 'Date','Paid Amt (Installment 5)', 'Date'])
     
     for expense in all_expenses:
         
-        expense_list = [expense.id, expense.budget.title, expense.vendor.name, expense.payed, expense.expense_type]
+        expense_list = [expense.id, expense.budget.title, expense.vendor.name, expense.payed, expense.expense_type, expense.purpose]
         if expense.installments.exists():
             for installment in expense.installments.all():
                 expense_list.append(installment.amount_paid)
@@ -88,6 +88,7 @@ def download_expenses(request, start_end):
             
         writer.writerow(expense_list)
 
+        
 
     # if any(all_budgets):
     #     for budget in all_budgets:

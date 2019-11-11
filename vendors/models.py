@@ -10,7 +10,7 @@ class Vendor(models.Model):
     phone = models.CharField(_("Phone number"), max_length=50)
     alternate = models.CharField(_("Alternate number"), max_length=50, blank=True, null=True)
     address = models.TextField(_("Address"), blank=True, null=True)
-    connection = models.CharField(_("Connection"), max_length=50, blank=True, null=True)
+    connection = models.CharField(_("Role"), max_length=50, blank=True, null=True)
     photo = models.ImageField(_("upload photo"), upload_to='vendor_photos/%Y/%m', blank=True)
     
     account_name = models.CharField(_("Account Name"), max_length=50, blank=True, null=True)

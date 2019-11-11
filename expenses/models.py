@@ -11,7 +11,7 @@ class Expense(models.Model):
 
     budget = models.ForeignKey(Budget , verbose_name=_("Budget"), on_delete=models.CASCADE, blank=True, null=True)
     vendor = models.ForeignKey(Vendor , verbose_name=_("Vendor"), on_delete=models.CASCADE)
-    purpose = models.CharField(_("Purpose"), max_length=50, blank=True, null=True)
+    purpose = models.CharField(_("Remarks"), max_length=50, blank=True, null=True)
     payed = models.BooleanField(_("Payment status"), choices=pay_status, default=False)
     expense_type = models.CharField(_("Expense Type"), max_length=50, choices=expense_types)
 
@@ -31,9 +31,16 @@ class Expense(models.Model):
 
 class ExpenseInstallment(models.Model):
 
+    PAY_CHOICES = (
+        ('cash', 'Cash'),
+        ('cheque', 'Cheque'),
+        ('online', 'Online'),
+        ('DD', 'Demand Draft')
+    )
     expense = models.ForeignKey(Expense, related_name="installments", on_delete=models.CASCADE)
     amount_paid = models.IntegerField(_("Amount Paid"), blank=True, null=True)
     date = models.DateField(_("Date"), auto_now=False, auto_now_add=False, blank=True, null=True)
+    payment_method = models.CharField(_("Payment Method"), max_length=50)
     next_pay_date = models.DateField(_("Next Pay Date"), auto_now=False, auto_now_add=False, blank=True, null=True)
 
 
