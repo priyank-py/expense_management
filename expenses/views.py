@@ -76,19 +76,27 @@ def download_expenses(request, start_end):
     response['Content-Disposition'] = f'attachment; filename="expenses {start_end}.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(['ID', 'Budget', 'Vendor', 'Budget Type','Vendor', 'Payment Status', 'Expense Type', 'Remarks','Paid Amt (Installment 1)', 'Date', 'Paid Amt (Installment 2)', 'Date', 'Paid Amt (Installment 3)', 'Date','Paid Amt (Installment 4)', 'Date','Paid Amt (Installment 5)', 'Date'])
+    writer.writerow(['ID', 'Budget', 'Vendor', 'Budget Type', 'Expense Type', 'Vendor', 'Remarks', 
+                    'Paid Amt (Installment 1)', 'Date', 'Payment Method', 'Cheque/Transaction/Card/DD number', 'Pay Status',
+                    'Paid Amt (Installment 2)', 'Date', 'Payment Method', 'Cheque/Transaction/Card/DD number', 'Pay Status',
+                    'Paid Amt (Installment 3)', 'Date', 'Payment Method', 'Cheque/Transaction/Card/DD number', 'Pay Status',
+                    'Paid Amt (Installment 4)', 'Date', 'Payment Method', 'Cheque/Transaction/Card/DD number', 'Pay Status',
+                    'Paid Amt (Installment 5)', 'Date', 'Payment Method', 'Cheque/Transaction/Card/DD number', 'Pay Status',
+                    ])
     
     for expense in all_expenses:
         
-        expense_list = [expense.id, expense.budget.title, expense.vendor.name, expense.payed, expense.expense_type, expense.purpose]
+        expense_list = [expense.id, expense.budget.title, expense.vendor.name, expense.budget.budget_type, expense.expense_type, expense.vendor.name, expense.purpose]
         if expense.installments.exists():
             for installment in expense.installments.all():
                 expense_list.append(installment.amount_paid)
                 expense_list.append(installment.date)
+                expense_list.append(installment.payment_method)
+                expense_list.append(installment.transaction_no)
+                expense_list.append(installment.payed)
             
         writer.writerow(expense_list)
-
-        
+       
 
     # if any(all_budgets):
     #     for budget in all_budgets:

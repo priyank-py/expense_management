@@ -126,6 +126,7 @@
       </div>
       <div class="card-footer">
         <div class="row text-center">
+        
           {% for expense, exdata in all_incomplete.items %}
           <div class="col-sm-12 col-md mb-sm-2 mb-0">
             <div class="text-muted">{{ expense.budget.title|title }} </div>
@@ -134,7 +135,7 @@
             <strong>Next Pay date {{exdata.2}} </strong>
             {% endif %}
             <div class="progress progress-xs mt-2">
-              <div
+              <div 
               {% if exdata.1 > 99 %}
                class="progress-bar bg-success" 
               {% elif exdata.1 < 1 %}

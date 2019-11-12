@@ -27,12 +27,12 @@ def dashboard(request):
     expenses_so_far = Expense.objects.all().filter(installments__date__gte=start_month_date).filter(installments__date__lte=date.today()).values_list('installments__amount_paid')
 
     expenses_so_far = sum([sum(i) for i in expenses_so_far])
-
+    print(expenses_so_far)
     expenses_past_seven_days = Expense.objects.all().filter(installments__date__gte=date.today() - timedelta(days=6)).filter(installments__date__lte=date.today()).values_list('installments__amount_paid')
     expenses_past_seven_days = sum([sum(i) for i in expenses_past_seven_days])
 
     if len(expenses_this_month) > 5:
-        all_incomplete = {i:i.installments.aggregate(Sum('amount_paid')) for i in expenses_this_month.order_by('-budget__amount')[:5]}
+        all_incomplete = {i:[i.installments.aggregate(Sum('amount_paid')), round(((i.budget.amount - i.installments.aggregate(Sum('amount_paid'))['amount_paid__sum'])/i.budget.amount)*100), i.installments.last().next_pay_date] for i in expenses_this_month.order_by('-budget__amount')[:5]}
     else:
         all_incomplete = {i:[i.installments.aggregate(Sum('amount_paid')), round(((i.budget.amount - i.installments.aggregate(Sum('amount_paid'))['amount_paid__sum'])/i.budget.amount)*100), i.installments.last().next_pay_date] for i in expenses_this_month.order_by('-budget__amount')}
     print(all_incomplete)
