@@ -46,6 +46,7 @@ def create_budget(request):
     return render(request, 'budget/index.html', context)
 
 
+
 def download_csv(request, start_end):
     start_date, end_date = start_end.split('_')
     current_month = int(datetime.now().strftime('%m'))
