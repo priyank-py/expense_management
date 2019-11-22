@@ -10,7 +10,27 @@
       </a>
       
       <ul class="nav navbar-nav ml-auto">
-        
+         <li class="nav-item dropdown">
+        <a class="" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+            <i class="far fa-bell d-flex">
+            {% if notification_no %}
+            <span style="font-size:10px;color:#fff;background:aqua;height:15px;width:15px;border-radius:50%;font-weight:bold;display:flex;align-items:center;justify-content:center;">{{notification_no}}</span>
+            {% endif %}
+            </i></a>
+          <div class="dropdown-menu dropdown-menu-right">
+            <div class="dropdown-header text-center">
+              <strong>Notifications</strong>
+            </div>
+            {% if new_budget %}
+              {% for budget in new_budget %}
+                <a class="dropdown-item" href="{% url 'admin:budgets_budget_change' budget.id %} ">
+                  <i class="fa fa-bell-o"></i> {{budget.title}}
+                  <span class="badge badge-info">{{budget.amount}} </span>
+                </a>
+              {% endfor %}
+            {% endif %}
+          </div>
+        </li>
        
         <li class="nav-item dropdown">
         Welcome,<a class="" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
