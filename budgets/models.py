@@ -23,3 +23,13 @@ class Budget(models.Model):
 
     def get_absolute_url(self):
         return reverse("Budget_detail", kwargs={"pk": self.pk})
+
+    def save(self, *args, **kwargs):
+        try:
+            msg = EmailMessage(f'Budget for {self.budget.title} is added!', f'Budget for {self.budget_type} have set to be due on {self.date} to our vendor named {self.vendor.name}\n\nRemarks:{self.purpose}', 'factscred@gmail.com', ['priyank7137@gmail.com'])
+            msg.content_subtype = "html" 
+            msg.send()
+
+            super(Expense, self).save(*args, **kwargs)
+        except:
+            super(Expense, self).save(*args, **kwargs)

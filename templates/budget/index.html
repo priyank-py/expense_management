@@ -5,19 +5,19 @@
 <div class="card">
     <div class="card-body">
         <div class="row">
-            <div class="col-sm-5">
+            <div class="col-sm-3">
                 <h4 class="card-title mb-0">Budget Chart</h4>
                 <div class="small text-muted">{{current_month_word}} {{current_year}}</div>
             </div>
             
-            <div class="col-sm-4 d-flex">
+            <div class="col-sm-7 d-flex justify-content-sm-start">
             <form action="." class="form-group d-flex">
             {% csrf_token %}
                 <input type="date" name="start" class="form-control" id=""><input type="date" class="form-control" name="end" id="">
                 <input type="submit" name="" id="" class="btn btn-bg-css3" value="Filter">
             </form>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2 float-right">
                 <a href="{% url 'download_budget' start_end %}" class="btn btn-success float-right">Download</a>
             </div> 
         </div>
