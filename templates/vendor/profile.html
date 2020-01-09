@@ -37,7 +37,7 @@
             <td>
                 <div>{{vendor.name}} </div>
                 <div class="small text-muted">
-                    <span>New</span> | Registered: Jan 1, 2015
+                    <span>Registered on</span> | {% if vendor.registered_on %}{{vendor.registered_on}} {% else %} date:unknown {% endif %}
                 </div>
             </td>
             <!--Country-->
@@ -49,22 +49,22 @@
             <td>
                 <div class="clearfix">
                     <div class="float-left">
-                        <strong>{{pay}}%</strong>
+                        <strong>{{pay.0}}%</strong>
                     </div>
                     <div class="float-right">
-                        <small class="text-muted">Jun 11, 2015 - Jul 10, 2015</small>
+                        <small class="text-muted">Remaining Amount: <strong>{{pay.1}}</strong></small>
                     </div>
                 </div>
                 <div class="progress progress-xs">
                     <div 
-                    {% if pay > 99 %}
+                    {% if pay.0 > 99 %}
                     class="progress-bar bg-success"
-                    {% elif pay < 1 %} 
+                    {% elif pay.0 < 1 %} 
                     class="progress-bar bg-danger"
                     {% else %}
                     class="progress-bar bg-warning"
                     {% endif %}
-                    role="progressbar" style="width: {{pay}}%" aria-valuenow="{{pay}}" aria-valuemin="0" aria-valuemax="100"></div>
+                    role="progressbar" style="width: {{pay.0}}%" aria-valuenow="{{pay.0}}" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </td>
             <!--Payment Method-->

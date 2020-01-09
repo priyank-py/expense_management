@@ -10,6 +10,7 @@ class Vendor(models.Model):
     alternate = models.CharField(_("Alternate number"), max_length=50, blank=True, null=True)
     address = models.TextField(_("Address"), blank=True, null=True)
     connection = models.CharField(_("Role"), max_length=50, blank=True, null=True)
+    registered_on = models.DateField(_("Registered on"), auto_now=False, auto_now_add=False, blank=True, null=True)
     photo = models.ImageField(_("upload photo"), upload_to='vendor_photos/%Y/%m', blank=True)
     gst = models.CharField(_("GST no."), max_length=50, blank=True, null=True)
     tan = models.CharField(_("TAN no."), max_length=50, blank=True, null=True)
