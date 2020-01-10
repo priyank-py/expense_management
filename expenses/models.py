@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from budgets.models import Budget
 from vendors.models import Vendor
 from django.core.mail import EmailMessage
+from django.contrib import messages
 
 # Create your models here.
 class Expense(models.Model):
@@ -26,11 +27,44 @@ class Expense(models.Model):
         return reverse("Expense_detail", kwargs={"pk": self.pk})
     
     def save(self, *args, **kwargs):
-        msg = EmailMessage('Expense is added!', f'Expense for {self.expense_type} have been made to {self.vendor.name}\n\nRemarks:{self.purpose}', 'factscred@gmail.com', ['priyank7137@gmail.com'])
-        msg.content_subtype = "html" 
-        msg.send()
 
-        super(Expense, self).save(*args, **kwargs)
+        body = f'''
+<html>
+<body>
+    <h1 class="text-center">Expense make to {self.vendor.name}</h1><br>
+    <h3>Details</h3>
+    <table>
+        <tbody>
+            <tr>
+                <td>Type</td>
+                <td>{self.expense_type}</td>
+            </tr>
+            <tr>
+                <td>Budget</td>
+                <td>{self.budget.title}</td>
+            </tr>
+            <tr>
+                <td>Purpose</td>
+                <td>{self.purpose}</td>
+            </tr>
+            <tr>
+                <td>Vendor</td>
+                <td>{self.vendor.name}</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
+        '''
+
+        try:
+            msg = EmailMessage('Expense is added!', body, 'info@red18tech.com', to=['priyank.p@red18tech.com'])
+            msg.content_subtype = "html" 
+            msg.send()
+
+            super(Expense, self).save(*args, **kwargs)
+        except:
+            super(Expense, self).save()
     
 
 
